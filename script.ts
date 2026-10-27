@@ -273,3 +273,69 @@ function handleCursos(data: unknown) {
     });
   }
 }
+
+//caso passe uma classe private nao tem acesso do lado de fora da funcao 
+
+class Produto{
+  tipo = "Produto";
+  nome : string;
+  private preco : number ;
+  constructor(nome: string, preco: number){
+    this.nome = nome;
+    this.preco = preco
+  }
+  getPreco(){
+    return Produto.transformarPreco(this.preco)
+  }
+  static transformarPreco(preco:number){
+    return `R$ ${preco}`
+  }
+}
+
+const livro = new Produto("O senhor dos aneis", 300);
+
+
+const produto1 = ['Notebook', 2500];
+
+const produto2: [string, number] = ['Notebook', 2500];
+
+produto2[0].toLowerCase();
+produto2[1].toFixed();
+
+
+if(typeof produto1[0] === 'string'){
+  console.log(produto1[0].toLocaleLowerCase())
+}
+
+
+
+// 1 - Faça um fetch das vendas: https://api.origamid.dev/json/vendas.json
+// 2 - Defina o tipo/interface de cada venda (tuple)
+// 3 - Some o total das vendas e mostre na tela
+
+
+
+
+async function handleFetch(){
+  const response = await fetch('https://api.origamid.dev/json/vendas.json');
+  const data = await response.json()
+  somarVendas(data)
+}
+
+
+
+interface Detalhes {
+  marca:string;
+  cor: string;
+}
+
+type Venda = [string, number, string, Detalhes ]
+
+
+function somarVendas(data:Venda[]){
+  let total = 0
+  for(let i = 0; i < data.length; i++){
+    total += data[i][1]
+  }
+  document.body.innerHTML += `<p>Total: ${total}</p>`
+}
