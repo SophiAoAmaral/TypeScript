@@ -186,7 +186,7 @@ function mostrarCursos(cursos : Cursos[]) {
 
 const btnMobile = document.getElementById('btn-mobile');
 
-function toggleMenu(event: MouseEvent) {
+function toggleMenu(event: PointerEvent) {
   const button = event.currentTarget;
   const nav = document.getElementById('nav');
   if (button instanceof HTMLElement && nav) {
@@ -203,4 +203,73 @@ function toggleMenu(event: MouseEvent) {
   }
 }
 
-btnMobile?.addEventListener('click', toggleMenu);
+btnMobile?.addEventListener('pointerdown', toggleMenu);
+
+
+
+
+
+// Crie uma função que arredonda um valor passado para cima.
+// A função pode receber string ou number.
+// A função deve retornar o mesmo tipo que ela receber.
+
+function arrendondar(a:string) : string;
+function arrendondar(a: number) : number
+function arrendondar(a: number | string) : number | string {
+
+  if(typeof a === 'number'){
+      return Math.ceil(a)
+  }else{
+    return Math.ceil(Number(a)).toString()
+  }
+}
+
+async function fetchProduto() {
+  const response = await fetch('https://api.origamid.dev/json/cursos.json');
+  const json = await response.json();
+  handleCursos(json)
+
+}
+fetchProduto();
+
+interface Curso{
+  nome: string;
+  horas: number;
+  aulas: number;
+  gratuito: boolean;
+  tags: string[];
+  idAulas: number[];
+  nivel: 'iniciante' | 'avancado';
+}
+
+function isCurso(value: unknown): value is Curso {
+  if (
+    value &&
+    typeof value === 'object' &&
+    'nome' in value &&
+    'horas' in value &&
+    'tags' in value
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+
+
+
+function handleCursos(data: unknown) {
+  if (Array.isArray(data)) {
+    data.filter(isCurso).forEach((item) => {
+      document.body.innerHTML += `
+        <div>
+          <h2>${item.nome}</h2>
+          <p>${item.horas}</p>
+          <p>${item.tags.join(', ')}</p>
+        </div>
+      `;
+    });
+  }
+}

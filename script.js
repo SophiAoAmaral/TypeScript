@@ -135,4 +135,4 @@ function toggleMenu(event) {
         }
     }
 }
-btnMobile?.addEventListener('click', toggleMenu);
+btnMobile?.addEventListener('pointerdown', toggleMenu);
